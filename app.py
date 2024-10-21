@@ -176,9 +176,13 @@ async def try_on(
             # writing the numpy array image to blob
             blob_class = DirectoryClient(container_3)
 
-            blob_class.write_numpy_array_as_image_to_blob(res_image_np, img_name)
+            # unique filename received from gradio client api, test
+            res_filename = "".join([result[0].split("/")[-2], ".jpg"])
+            blob_class.write_numpy_array_as_image_to_blob(res_image_np, res_filename)
+            res_url = f"{base_url}/{container_3}/{res_filename}"
 
-            res_url = f"{base_url}/{container_3}/{img_name}"
+            # blob_class.write_numpy_array_as_image_to_blob(res_image_np, img_name)
+            # res_url = f"{base_url}/{container_3}/{img_name}"
 
             print(res_url, "=======result url blob=========")
 
