@@ -7,13 +7,20 @@ Techniques used:
 - Twilio server for whatsapp chatbot 
 - FastAPI
 - Gradio Client
-- Render (For hosting this FastAPI server)
+- Koyeb (For hosting this FastAPI server)
+- Also tried Render for hosting the FastAPI but it doesn't provide disk storage in free trial
 
 Future Scope:
 - Improving the chat interface to make it more user friendly.
 - Handling the cache to delete older entries as soon as new entries over writes them
 
 
+
+## Running the FastAPI Swagger UI
+
+```bash
+https://specific-isadora-personalmandar-c7101109.koyeb.app/docs
+```
 
 ## Cloning the repo
 

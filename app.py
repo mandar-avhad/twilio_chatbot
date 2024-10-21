@@ -68,10 +68,10 @@ def send_media_message(url, body_text):
     
     # delete the images from blob after result (temp)
     # container_name = "demo" # read it from env var/secret
-    blob_class = DirectoryClient(container_1)
+    # blob_class = DirectoryClient(container_1)
     
-    blob_class.delete_images_from_blob(folder_name="test/input/")
-    blob_class.delete_images_from_blob(folder_name="test/")
+    # blob_class.delete_images_from_blob(folder_name="test/input/")
+    # blob_class.delete_images_from_blob(folder_name="test/")
 
 
 # Placeholder API, testing
@@ -130,25 +130,37 @@ async def try_on(
 
         # open as Pil img
         input_img = Image.open(BytesIO(response.content))
+        input_img.save(img_name)
         # Convert the image to a NumPy array
         input_img_np = np.array(input_img)
         # color scheme rgb
         input_img_np = input_img_np[:, :, ::-1]
         
         # writing the numpy array image to blob
-        blob_class = DirectoryClient(container_2)
+        # blob_class = DirectoryClient(container_2)
 
-        blob_class.write_numpy_array_as_image_to_blob(input_img_np, img_name)
+        # blob_class.write_numpy_array_as_image_to_blob(input_img_np, img_name)
 
-        input_url = f"{base_url}/{container_2}/{img_name}"
-        print(input_url, "=======input_url blob=========")
+        # input_url = f"{base_url}/{container_2}/{img_name}"
+        # print(input_url, "=======input_url blob=========")
+
 
     print(img_name, "====img_name======")
     if img_name == "result.jpg":
         try:
-            person_img = f"{base_url}/{container_2}/person.jpg"
-            garment_img = f"{base_url}/{container_2}/garment.jpg"
+            # person_img = f"{base_url}/{container_2}/person.jpg"
+            # garment_img = f"{base_url}/{container_2}/garment.jpg"
             
+            DOWNLOAD_DIRECTORY = os.getcwd()
+            person_img_p = os.path.join(DOWNLOAD_DIRECTORY, "person.jpg")
+            garment_img_p = os.path.join(DOWNLOAD_DIRECTORY, "garment.jpg")
+
+            #########
+            from pathlib import Path
+            person_img = Path(person_img_p)
+            garment_img = Path(garment_img_p)
+            #########
+
             # Try-ON gradio logic
             from gradio_client import Client, file
             from gradio_client import handle_file
@@ -170,19 +182,20 @@ async def try_on(
             print(result[0], "----gradio result url----------")
 
             res_image = Image.open(result[0])
+            res_image.save("result.jpg")
+
             res_image_np = np.array(res_image)
             res_image_np = res_image_np[:, :, ::-1]
 
             # writing the numpy array image to blob
             blob_class = DirectoryClient(container_3)
 
-            # unique filename received from gradio client api, test
+            # unique filename received from gradio client api
             res_filename = "".join([result[0].split("/")[-2], ".jpg"])
+            
             blob_class.write_numpy_array_as_image_to_blob(res_image_np, res_filename)
-            res_url = f"{base_url}/{container_3}/{res_filename}"
 
-            # blob_class.write_numpy_array_as_image_to_blob(res_image_np, img_name)
-            # res_url = f"{base_url}/{container_3}/{img_name}"
+            res_url = f"{base_url}/{container_3}/{res_filename}"
 
             print(res_url, "=======result url blob=========")
 
@@ -204,8 +217,4 @@ async def try_on(
         return send_message(msg)
     else:
         return send_message("Please try uploading an image with Person/Garment tag. Thank you")
-
-
-
-
 
