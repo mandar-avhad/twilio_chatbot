@@ -15,4 +15,4 @@ https://gradio-pypi-previews.s3.amazonaws.com/e5292fa86d9a1f641bff409b12046161e7
 azure-storage-blob==12.13.1
 azure-cognitiveservices-vision-computervision==0.9.0
 opencv-python-headless==4.7.0.68
-opencv-python==4.7.0.68
+# opencv-python==4.7.0.68
